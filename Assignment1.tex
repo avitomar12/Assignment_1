@@ -1,0 +1,98 @@
+\documentclass{homeworg}
+
+\title{CS 827 - Exact and Parameterized Algorithms}
+\author{Avi Tomar (MS2020004)}
+
+
+\begin{document}
+
+\maketitle
+
+\exercise
+"permanent": In this case ${u,v} \in E$ and the algorithm is not allowed to delete ${u,v}$ later on.
+"forbidden": In this case, ${u,v} \notin E$ and the algorithm is not allowed to add ${u,v}$ later on.
+
+"=" is to be consider as comparison operator.
+
+":=" is to be considered as assignment operator.
+
+RR1. For every pair of vertices $u,v \in V$:
+
+\begin{enumerate}
+    \item If $u$ and $v$ have more than k common neighbours, then ${u,v}$ has to belong to E and we set $T[u,v]:=$ permanent. if {$u$,$v$} is not in E, we add it to E.
+    \item If u and v have more than k non-common neighbours, then ${u,v}$ cannot belong to E and we set $T[u,v]:=$ forbidden. if ${u,v}$ is in E, we delete it.
+    \item If $u$ and $v$ have both more than $k$ common neighbour and more than k non-neighbour, then the given instance has no solution.
+\end{enumerate}
+(Checking every 3 vertex take at most $O(V^3)$)
+
+
+RR2: For every three vertices $u,v,w \in V$:
+
+\begin{enumerate}
+    \item If $T[u,v]=$ permanent and $T[u,w]=$ permanent, then ${v,w}$ is permanent, if not already there, has to be added to $E$ and $T[v,w]:=$ permanent.
+    \item If $T[u,v]=$ permanent and $T[u,w]=$ forbidden, then ${v,w}$ is forbidden, if not already there, has to be deleted to $E$and $T[v,w]:=$ forbidden.
+\end{enumerate}
+
+(Checking every 3 vertex take at most $O(V^3)$)
+
+RR3: Delete the connected component which are clique from the graph. 
+
+(Can be done in linear time)
+
+Overall polynomial time.
+
+
+
+
+
+\exercise
+1. 
+If graph contain a loop or circuit of two edges its trivial that length of cycle is $O(logn)$.
+So now assume that such circuit do not occur in graph. 
+
+Let $x$ be any vertex of $G$. if $G$ contain no circuit of length $ \leq 2t$ edges, then all vertices which can be reached from $x_t$ in t or fewer edges are all distinct. 
+
+Since every vertex of $G$ has degree $\leq 3$. Now the simple argument show that in t step we can reach at least 
+$1+3+ .... + 3* 2^{t-1} \geq 2^{t+1} > n $ i.e 
+$t=[\frac{log n}{log2}]$
+vertices. 
+
+Thus $G$ contain a circuit of length $O(log n)$.
+
+2. 
+
+
+
+
+
+\exercise 
+Set Cover problem
+
+
+
+
+
+
+\exercise 
+Reduction Rules.
+\begin{enumerate}
+
+    \item Remove the blue points which does not cover any red points when horizontal or vertical line are drawn from blue point. $(G,k) \rightarrow (G-v,k)$  
+    
+    \item  Remove red points which does not cover blue point when horizontal and vertical line are draw from those red points. $(G,k) \rightarrow (G-v,k)$.
+    
+    If less than k red points are left then it is yes instance. 
+    
+ \item Now we have the instance such that if we draw any line from blue point at least one red point will lie on it. Similarly, if we draw line from red point at least one blue point will lie on that line.
+ 
+ So, recursively for all blue point in G check both the line horizontal and vertical and consider which contain more no. of blue point and less no. of red point. till total red point considered equal to k. i.e in at most k step all blue points are considered(at worst) then it is yes instance, otherwise no.
+ 
+ 
+
+\end{enumerate}
+Time complexity: 
+Reduction 1 and 2 consider all the points once so its polynomial.
+
+Reduction 3 recursion is bounded by the height k. So, $2^k$.
+
+\end{document}
