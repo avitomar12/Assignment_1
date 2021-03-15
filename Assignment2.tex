@@ -7,4 +7,21 @@
 \begin{document}
 
 \maketitle
+
+\exercise
+3-Hitting set problem can be seen as vertex cover problem for hypergraph, where there is an hyperedge between upto 3 instead of 2 vertices and the task is to determine a minimal subset of vertices covering all edges.
+
+Hyper graph is a path G=(V,E) such that V is a finite set and $E \subseteq 2^V \backslash \{ \phi \}$ . The rank of G is $max_{e \in E^|e|}$. An hyper graph of rank 3 or less is 3-hypergraph.
+
+Hitting set: we say that $S \subseteq V$ is an hitting set for an hypergraph $G=(V,E)$ if for every $e \in E$ it holds that $ e \cap S = \phi$.
+3-hitting set given a 3-hypergraph $G=(V,E)$ and K, decide if G has a hitting set of size atmost k.
+
+3-HS compression: Given 3-hypergraph G, an hitting set X of G, $|x| \leq K+1$ and K either find a hitting set Z of G of size atmost k, or decide no such set exists.
+
+Lemma: if 3-HS compression has an algorithm with running time $f(k).poly(n)$ then 3-HS has an algorithm with running time $f(k).poly(n)$.
+
+Defining $G[U]=(U \cap V(G), {e \in E(G) | e \subseteq U})$
+
+Iterative compression for 3-HS
+
 \end{document}
