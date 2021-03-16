@@ -13,15 +13,125 @@
 
 Hyper graph is a path G=(V,E) such that V is a finite set and $E \subseteq 2^V \backslash \{ \phi \}$ . The rank of G is $max_{e \in E^|e|}$. An hyper graph of rank 3 or less is 3-hypergraph.
 
-Hitting set: we say that $S \subseteq V$ is an hitting set for an hypergraph $G=(V,E)$ if for every $e \in E$ it holds that $ e \cap S = \phi$.
+\textbf{Hitting set:} we say that $S \subseteq V$ is an hitting set for an hypergraph $G=(V,E)$ if for every $e \in E$ it holds that $ e \cap S = \phi$.
 3-hitting set given a 3-hypergraph $G=(V,E)$ and K, decide if G has a hitting set of size atmost k.
 
-3-HS compression: Given 3-hypergraph G, an hitting set X of G, $|x| \leq K+1$ and K either find a hitting set Z of G of size atmost k, or decide no such set exists.
+\textbf{3-HS compression:} Given 3-hypergraph G, an hitting set X of G, $|x| \leq K+1$ and K either find a hitting set Z of G of size atmost k, or decide no such set exists.
 
-Lemma: if 3-HS compression has an algorithm with running time $f(k).poly(n)$ then 3-HS has an algorithm with running time $f(k).poly(n)$.
+\textbf{Lemma:} if 3-HS compression has an algorithm with running time $f(k).poly(n)$ then 3-HS has an algorithm with running time $f(k).poly(n)$.
 
-Defining $G[U]=(U \cap V(G), {e \in E(G) | e \subseteq U})$
+Defining $G[U]=(U \cap V(G), {e \in E(G) |  e \subseteq U})$
 
-Iterative compression for 3-HS
+\textbf{Iterative compression for 3-HS:}
+\begin{enumerate}
+    \item Let $V(G)={v_1,v_2,....,v_k}, V_i={v_1,v_2,.....v_i},  G_i=[V_i]$
+    \item Set $S_0=\phi$ (iteration 0)
+
+\item for i from 1 to n:
+\begin{itemize}
+    \item Solve 3-HS compression for $(G_i,K)$ given the hitting set $S_i-1 \cup V_i$
+
+    \item if got a solution, set $S_i$ to be the solution otherwise return $(G,k) \notin 3HS$
+\end{itemize}
+    
+
+\item return $S_n$ as a hitting set of size k for G
+\end{enumerate}
+
+
+
+
+
+
+
+\textbf{3HS compression:}
+
+Input : 3-hyper graph G, an hitting set X, $|X|\leq k+1$
+
+output: An hitting set Z, $|Z|\leq k$ of G, decide $(G,k) \notin 3HS$
+
+Algorithm:
+Assume such set Z exist. Now guess $X_Z = X \cap Z$. Finding out an hitting set W of $G_X = G \textbackslash X_Z$ such that $W \cap Z= \phi$ , $|W| \leq k-|X_Z|$. Using the fact that $X \textbackslash X_z$ is an hitting set of $G_X$
+ 
+ \textbf{Disjoint 3-HS}
+ 
+ Input: A 3-hypergraph G, an Hitting set X of G and k.
+ 
+ Output: An HS Z of G, $|Z| \leq k$, $Z\cap X= \phi $ or decide that no such set exist.
+ 
+ \textbf{3-HS compression for disjoint :}
+ 
+ 1. for every $X_Z \subseteq X$:
+ 
+ \quad (i) solve disjoint 3-HS for $G \textbackslash X_Z$ and $X \textbackslash X_Z$ and parameter $k-|X_Z|$
+ 
+ \quad (ii) if got a solution S, then return $S \cup X_Z$
+ 
+ 2. if failed for every set $X_Z$, then determine that $(G,k) \notin 3HS$
+ 
+ \textbf{Solving disjoint problem :}
+ 
+ \begin{enumerate}
+     \item if there is $e \in E(G)$ such that $e \subseteq X$ return failure
+     \item Let $U=\{v\in V(G) | \exists e\in E(G), e\backslash X=\{v\}\}, if |U|\geq k$ return failure.
+     \item Let $ G'= (V', E')$ where $V'=V(G)\backslash X\backslash U $ and $E'=\{ (u,v) \in V' | \exists e \in E(G); {u,V}=e \backslash X \}$ 
+     \item Find a vertex cover S of $G'$ of size $ k' = k - |U|$. if one exists, return S \cup U. otherwise return failure.
+
+ \end{enumerate}
+Time complexity : $2.61^k .n^O(1)$ 
+ \begin{itemize}
+     \item Disjoint 3-HS in time $1.61^k .poly(n)$ using reduction to VC.
+     \item 3-HS compression in time($1+1.61^k.poly(n)$
+     \item finally 3-Hitting set in same $2.61^k .poly(n)$  
+ \end{itemize}
+     
+ 
+\exercise
+
+\textbf{Reduction Rule 1 :-} Delete isolated vertex $(G,k) \xrightarrow[]{} (G-1,k-1)$.
+
+\textbf{Proof :-} Since isolated vertex are not part of matching we have to delete.
+
+\textbf{Reduction Rule 2 :-} For a component if it is a clique of size m then $(G,k) \xrightarrow[] {}(G-m, k-(m-2))$.
+
+\textbf{Proof :-} Since the component is clique all the vertices are connected to each other. So, when we remove any vertices resultant graph is clique again till m=3. when m=2 we are left with 1 regular graph. So we need to delete m-2 vertices to get 1 regular out of clique of size m. 
+
+\textbf{Reduction Rule 3 :-} Select Max degree vertex and delete it. $(G,k) \xrightarrow[]{} (G-1,k-1)$ 
+
+
+Vertex with highest degree can be deleted. If not deleted then its neighbour will be deleted to make graph 1-regular.
+
+
+\textbf{Reduction Rule 4 :-} If we have a component as 1-regular then we can remove the pair of vertices. $(G,k) \xrightarrow[]{} (G-2,k)$ 
+ 
+
+Repeat RR3, RR2, RR4 and RR1 till the max degree = 2 or k is already reached. if more than k vertices are deleted and graph still have vertex of degree 2 then no instance. 
+
+After applying RR1,2,3 and 4 exhaustively we will be left with path graph.  
+\exercise
+Idea: For every $X \subseteq V(G)$ we will be finding out the minimum no. of the edges to be removed inorder to make the graph acyclic. 
+
+X be the subset of V(G).
+
+G[X] be the graph with X vertices set.
+
+DP[G[X]] be the minimum number of edges to be removed to make G[X] acyclic.
+
+Algorithm:
+\begin{enumerate}
+
+\item for every subset X of V(G):
+
+\quad DP[G[X]]=min(DP[G[X-u]]+deg\_out(u) for all u in X)
+
+
+\item return DP[V(G)]
+
+\end{enumerate}
+
+
+Recurrence :- \quad $DP[X]=\min_{\forall u \in X} DP[X-u]+deg\_out(u)$
+
+Time Complexity :- $2^n .n^O(1)$ 
 
 \end{document}
