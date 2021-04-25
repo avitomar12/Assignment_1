@@ -1,0 +1,47 @@
+\documentclass{homeworg}
+
+\title{CS 827 - Exact and Parameterized Algorithms}
+\author{Avi Tomar (MS2020004)}
+
+
+\begin{document}
+
+\maketitle
+
+\exercise
+\textbf{Idea} : Each line is like a subset. where each set $s \in S $ contains exactly one red element, and no red element is contained in more than one set. The goal is to cover all blue element using minimum possible no. of subsets from S. This reduction shows that this problem is at least as hard as the set cover.
+
+\textbf{Reduction} : 
+Let $R=\{r_1,r_2 ... r_p\}$ and $B=\{b_1, b_2 ....b_q\}$ be two finite set, and let $S \in 2^{R\cup B}$ be a family of subsets of $R \cup B$. Now our goal is to find a subfamily $C=\{s_{i_1}, ......s_{i_m} \} \subseteq S$ that cover all blue elements, but cover minimum possible red elements. Each subset corresponds to a line on the plain. 
+\exercise
+
+Initially we can form tree decomposition of the given graph.
+
+Let us consider 
+
+$B_x$ : Vertices appearing in node x.
+
+$V_x$ : Vertices appearing in he sub tree rooted at x.
+
+For every node x and coloring $c : B_x \xrightarrow[]{} \{1,2,3 \}$, we compute the boolean value E[x,c], which is true if and only if c can be extended to a 3-coloring of $V_x$. More formally 
+\begin{equation}
+    E[x,c]= \begin{cases}
+    True, &\text{if c can be extended to a proper coloring of vertices $V_x$} \\
+    False, &\text{ otherwise}
+    \end{cases}
+\end{equation}
+Convert tree decomposition into rooted nice tree decomposition with four different type of node:
+
+\begin{enumerate}
+    \item \textbf{Leaf} : no children, $|B_x|=1$ which is trivial
+    \item \textbf{Introduce} : one child y, $B_x = B_y \bigcup \{v\} $ for some vertex v. if $c(v) \neq c(u)$ for every neighbour u of v, then $E[x,c]=E[y,c']$ where c` is c restricted to $B_y$.
+    \item \textbf{Forget} : 1 child y , $B_x = B_y \textbackslash \{v\}$ for some vertex v 
+    $E[x,c]$ is true if $E[y,c']$ is true for one of the 3 extensions of c to $B_y$.
+    \item \textbf{Join} : 2 children $y_1$, $y_2$ with $B_x=B_{y_1}=B_{y_2}$
+    $E[x,c]=E[y_1,c]\land  E[y_2,c]$
+    
+    
+\end{enumerate}
+Time complexity : There are $3^w+1 . n $ subproblem $E[x,c]$ and each subproblem can be solved in constant time ( assuming the children are already solved).
+    So, running time is $O(3^w.n)$
+\end{document}
